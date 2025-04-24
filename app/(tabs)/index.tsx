@@ -1,74 +1,89 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, ScrollView } from "react-native";
+import { useRouter } from "expo-router";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+// import { HelloWave } from "@/components/HelloWave";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 
-export default function HomeScreen() {
+// TODO: move to new section
+// function OverViewStats() {
+//   return (
+//     <Grid className="gap-5" _extra={{ className: "grid-cols-8" }}>
+//       <GridItem className="p-6 rounded-md" _extra={{ className: "col-span-4" }}>
+//         <VStack>
+//           <Text size="xl" className="text-gray-500">
+//             จำนวนคน
+//           </Text>
+//           <Text size="4xl" className="text-gray-900">
+//             0
+//           </Text>
+//         </VStack>
+//       </GridItem>
+//       <GridItem className="p-6 rounded-md" _extra={{ className: "col-span-4" }}>
+//         <VStack>
+//           <Text size="xl" className="text-gray-500">
+//             ราคารวม
+//           </Text>
+//           <Text size="4xl" className="text-gray-900 truncate">
+//             0.00
+//           </Text>
+//         </VStack>
+//       </GridItem>
+//     </Grid>
+//   );
+// }
+
+// ----------------------------------------------------------------------
+
+const styles = StyleSheet.create({
+  safeAreaContainer: {
+    flex: 1,
+  },
+  scrollViewContainer: {
+    flex: 1,
+  },
+  orderListContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
+// ----------------------------------------------------------------------
+
+function HomeScreen() {
+  const router = useRouter();
+
+  const isEmpty = true;
+
+  // ----------------------------------------------------------------------
+
+  const handlePressEmptyMember = () => {
+    router.push("/(modals)/order/order-add");
+  };
+
+  // ----------------------------------------------------------------------
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
+    <ScrollView
+      className="bg-white"
+      contentContainerStyle={styles.scrollViewContainer}
+    >
+      {/* {!isEmpty && <OverViewStats />} */}
+      <ThemedView style={styles.orderListContainer}>
+        <IconSymbol size={110} color="#525252" name="creditcard.fill" />
+        <ThemedText size="lg" className="mb-3">
+          ยังไม่มีรายการ
         </ThemedText>
+        {/* <Button size="xl" onPress={handlePressEmptyMember}>
+          <ButtonIcon as={AddIcon} className="mr-2" />
+          <ButtonText>เพิ่มรายการ</ButtonText>
+        </Button> */}
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+export default HomeScreen;
