@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flex: 1,
-    backgroundColor: "white",
   },
   orderListContainer: {
     alignItems: "center",
@@ -39,12 +38,16 @@ const styles = StyleSheet.create({
 
 function OrderScreen() {
   const router = useRouter();
+  const backgroundColor = useThemeColor({}, "background");
 
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <ScrollView
         className="bg-white"
-        contentContainerStyle={styles.scrollViewContainer}
+        contentContainerStyle={[
+          { backgroundColor },
+          styles.scrollViewContainer,
+        ]}
       >
         <OverallStat />
         <EmptyStat />

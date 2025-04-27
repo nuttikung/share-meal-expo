@@ -6,31 +6,63 @@
 const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
 
+// ----------------------------------------------------------------------
+
+type TColor = {
+  text: string;
+  background: string;
+  tint: string;
+  icon: string;
+  tabContainerBackground: string;
+  tabIconDefault: string;
+  tabIconSelected: string;
+  divider: string;
+  // Input
+  inputBorderColor: string;
+  inputPlacholderColor: string;
+};
+
+// ----------------------------------------------------------------------
+
+const LIGHT_PALLETE: TColor = {
+  text: "#11181C",
+  background: "#fff",
+  tint: tintColorLight,
+  icon: "#687076",
+  // ----------------------------------------------------------------------
+  tabContainerBackground: "#fff",
+  tabIconDefault: "#687076",
+  tabIconSelected: "#fff",
+  // tabIconSelected: tintColorLight,
+  // ----------------------------------------------------------------------
+  divider: "#DFE4EA",
+  // Input
+  inputBorderColor: "#DFE4EA",
+  inputPlacholderColor: "#C9CDD1",
+};
+
+const DARK_PALLETE: TColor = {
+  text: "#ECEDEE",
+  background: "#151718",
+  tint: tintColorDark,
+  icon: "#9BA1A6",
+  // ----------------------------------------------------------------------
+  tabContainerBackground: "#22272B",
+  tabIconDefault: "#DEE4EA",
+  // tabIconDefault: "#9BA1A6",
+  tabIconSelected: tintColorDark,
+  // ----------------------------------------------------------------------
+  // TODO: change divider for dark theme
+  divider: "#FFF",
+  inputBorderColor: "#FFF",
+  inputPlacholderColor: "#FFF",
+};
+
+// ----------------------------------------------------------------------
+
 const Colors = {
-  light: {
-    text: "#11181C",
-    background: "#fff",
-    tint: tintColorLight,
-    icon: "#687076",
-    tabIconDefault: "#687076",
-    tabIconSelected: tintColorLight,
-    divider: "#DFE4EA",
-    // Input
-    inputBorderColor: "#DFE4EA",
-    inputPlacholderColor: "#C9CDD1",
-  },
-  dark: {
-    text: "#ECEDEE",
-    background: "#151718",
-    tint: tintColorDark,
-    icon: "#9BA1A6",
-    tabIconDefault: "#9BA1A6",
-    tabIconSelected: tintColorDark,
-    // TODO: change divider for dark theme
-    divider: "#FFF",
-    inputBorderColor: "#FFF",
-    inputPlacholderColor: "#FFF",
-  },
+  light: LIGHT_PALLETE,
+  dark: DARK_PALLETE,
 };
 
 export { Colors };

@@ -1,4 +1,4 @@
-import { View, StyleSheet, LayoutChangeEvent } from "react-native";
+import { StyleSheet, LayoutChangeEvent } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { TabbarButton } from "./TabbarButton";
@@ -8,6 +8,8 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { ThemedView } from "./ThemedView";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 // ----------------------------------------------------------------------
 
@@ -18,11 +20,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#FFF",
     marginHorizontal: 80,
     paddingVertical: 15,
     borderRadius: 35,
-    shadowColor: "#000",
+    // shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
   },
@@ -41,6 +42,14 @@ type TDimension = { width: number; height: number };
 
 function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const { colors } = useTheme();
+  const tabContainerBackgroundColor = useThemeColor(
+    {},
+    "tabContainerBackground",
+  );
+
+  const tabIconSelectedColor = useThemeColor({}, "tabIconSelected");
+  const tabIconDefaultColor = useThemeColor({}, "tabIconDefault");
+
   const [dimension, setDimension] = useState<TDimension>({
     width: 100,
     height: 20,
@@ -73,7 +82,10 @@ function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   }, [state.index]);
 
   return (
-    <View onLayout={onTabbarLayout} style={styles.tabbar}>
+    <ThemedView
+      onLayout={onTabbarLayout}
+      style={[{ backgroundColor: tabContainerBackgroundColor }, styles.tabbar]}
+    >
       <Animated.View
         style={[
           animatedStyle,
@@ -123,14 +135,14 @@ function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             isFocused={isFocused}
             routeName={route.name}
             color={{
-              icon: isFocused ? "#FFF" : colors.text,
+              icon: isFocused ? tabIconSelectedColor : tabIconDefaultColor,
               label: isFocused ? colors.primary : colors.text,
             }}
             label={label}
           />
         );
       })}
-    </View>
+    </ThemedView>
   );
 }
 
