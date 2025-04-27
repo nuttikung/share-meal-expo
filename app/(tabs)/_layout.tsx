@@ -14,8 +14,19 @@ function TabLayout() {
 
   return (
     <Tabs
+      // initialRouteName="order"
       tabBar={(props) => <TabBar {...props} />}
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: false,
+        tabBarButton: HapticTab,
+        tabBarStyle: Platform.select({
+          ios: {
+            // Use a transparent background on iOS to show the blur effect
+            position: "absolute",
+          },
+          default: {},
+        }),
+      }}
       // screenOptions={{
       //   tabBarShowLabel: false,
       //   tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
@@ -35,25 +46,16 @@ function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "รายการ",
+          title: "รายการอาหาร",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="list.bullet" color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="home"
+        name="member"
         options={{
-          title: "home",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="list.bullet" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: "คนจ่าย",
+          title: "รายชื่อคนจ่าย",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="person.2.fill" color={color} />
           ),

@@ -1,39 +1,13 @@
-import { StyleSheet, Platform, ScrollView } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-// import { HelloWave } from "@/components/HelloWave";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { IconSymbol } from "@/components/ui/IconSymbol";
-
-// TODO: move to new section
-// function OverViewStats() {
-//   return (
-//     <Grid className="gap-5" _extra={{ className: "grid-cols-8" }}>
-//       <GridItem className="p-6 rounded-md" _extra={{ className: "col-span-4" }}>
-//         <VStack>
-//           <Text size="xl" className="text-gray-500">
-//             จำนวนคน
-//           </Text>
-//           <Text size="4xl" className="text-gray-900">
-//             0
-//           </Text>
-//         </VStack>
-//       </GridItem>
-//       <GridItem className="p-6 rounded-md" _extra={{ className: "col-span-4" }}>
-//         <VStack>
-//           <Text size="xl" className="text-gray-500">
-//             ราคารวม
-//           </Text>
-//           <Text size="4xl" className="text-gray-900 truncate">
-//             0.00
-//           </Text>
-//         </VStack>
-//       </GridItem>
-//     </Grid>
-//   );
-// }
+import { OverallStat } from "@/sections/overall-stat";
+import { ThemeTextInput } from "@/components/ThemeTextInput";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 // ----------------------------------------------------------------------
 
@@ -43,47 +17,65 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flex: 1,
+    backgroundColor: "white",
   },
   orderListContainer: {
-    flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+    margin: 10,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderStyle: "dashed",
+  },
+  orderForm: {
+    flex: 1,
+  },
+  label: {
+    marginVertical: 3,
+    marginHorizontal: 12,
   },
 });
 
 // ----------------------------------------------------------------------
 
-function HomeScreen() {
+function OrderScreen() {
   const router = useRouter();
 
-  const isEmpty = true;
-
-  // ----------------------------------------------------------------------
-
-  const handlePressEmptyMember = () => {
-    router.push("/(modals)/order/order-add");
-  };
-
-  // ----------------------------------------------------------------------
-
   return (
-    <ScrollView
-      className="bg-white"
-      contentContainerStyle={styles.scrollViewContainer}
-    >
-      {/* {!isEmpty && <OverViewStats />} */}
-      <ThemedView style={styles.orderListContainer}>
-        <IconSymbol size={110} color="#525252" name="creditcard.fill" />
-        <ThemedText size="lg" className="mb-3">
-          ยังไม่มีรายการ
-        </ThemedText>
-        {/* <Button size="xl" onPress={handlePressEmptyMember}>
-          <ButtonIcon as={AddIcon} className="mr-2" />
-          <ButtonText>เพิ่มรายการ</ButtonText>
-        </Button> */}
-      </ThemedView>
-    </ScrollView>
+    <SafeAreaView style={styles.safeAreaContainer}>
+      <ScrollView
+        className="bg-white"
+        contentContainerStyle={styles.scrollViewContainer}
+      >
+        <OverallStat />
+        <EmptyStat />
+        <ThemedView style={styles.orderForm}>
+          <ThemedText type="subtitle" style={styles.label}>
+            ชื่อรายการ
+          </ThemedText>
+          <ThemeTextInput placeholder="เช่น บุฟเฟ่ต์, หมูกระทะ, ชาเขียว, เบียร์ (โปร)" />
+          <ThemedText type="subtitle" style={styles.label}>
+            ราคา
+          </ThemedText>
+          <ThemeTextInput
+            keyboardType="numeric"
+            placeholder="เช่น 99, 100, 345, 500"
+          />
+        </ThemedView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
-export default HomeScreen;
+function EmptyStat() {
+  const iconColor = useThemeColor({}, "icon");
+  const borderColor = useThemeColor({}, "inputPlacholderColor");
+
+  return (
+    <ThemedView style={[{ borderColor }, styles.orderListContainer]}>
+      <MaterialIcons size={110} color={iconColor} name="payments" />
+      <ThemedText type="subtitle">ยังไม่มีรายการ</ThemedText>
+    </ThemedView>
+  );
+}
+
+export default OrderScreen;

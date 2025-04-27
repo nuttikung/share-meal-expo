@@ -56,21 +56,21 @@ function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 
   // ----------------------------------------------------------------------
 
-  // When deep link from any index we need effect here.
-  useEffect(() => {
-    tabPositionX.value = withSpring(buttonWidth * state.index, {
-      duration: 1000,
-    });
-  }, [state.index]);
-
-  // ----------------------------------------------------------------------
-
   const onTabbarLayout = (e: LayoutChangeEvent) => {
     setDimension({
       height: e.nativeEvent.layout.height,
       width: e.nativeEvent.layout.width,
     });
   };
+
+  // ----------------------------------------------------------------------
+
+  // When deep link from any index we need effect here.
+  useEffect(() => {
+    tabPositionX.value = withSpring(buttonWidth * state.index, {
+      duration: 1200,
+    });
+  }, [state.index]);
 
   return (
     <View onLayout={onTabbarLayout} style={styles.tabbar}>

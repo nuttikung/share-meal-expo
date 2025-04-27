@@ -6,7 +6,7 @@
 const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
 
-export const Colors = {
+const Colors = {
   light: {
     text: "#11181C",
     background: "#fff",
@@ -14,6 +14,10 @@ export const Colors = {
     icon: "#687076",
     tabIconDefault: "#687076",
     tabIconSelected: tintColorLight,
+    divider: "#DFE4EA",
+    // Input
+    inputBorderColor: "#DFE4EA",
+    inputPlacholderColor: "#C9CDD1",
   },
   dark: {
     text: "#ECEDEE",
@@ -22,5 +26,11 @@ export const Colors = {
     icon: "#9BA1A6",
     tabIconDefault: "#9BA1A6",
     tabIconSelected: tintColorDark,
+    // TODO: change divider for dark theme
+    divider: "#FFF",
+    inputBorderColor: "#FFF",
+    inputPlacholderColor: "#FFF",
   },
 };
+
+export { Colors };
