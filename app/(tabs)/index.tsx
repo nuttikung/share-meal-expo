@@ -41,14 +41,11 @@ function OrderScreen() {
   const backgroundColor = useThemeColor({}, "background");
 
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
-      <ScrollView
-        className="bg-white"
-        contentContainerStyle={[
-          { backgroundColor },
-          styles.scrollViewContainer,
-        ]}
-      >
+    <ScrollView
+      className="bg-white"
+      contentContainerStyle={[{ backgroundColor }, styles.scrollViewContainer]}
+    >
+      <SafeAreaView style={styles.safeAreaContainer}>
         <OverallStat />
         <EmptyStat />
         <ThemedView style={styles.orderForm}>
@@ -64,8 +61,8 @@ function OrderScreen() {
             placeholder="เช่น 99, 100, 345, 500"
           />
         </ThemedView>
-      </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScrollView>
   );
 }
 

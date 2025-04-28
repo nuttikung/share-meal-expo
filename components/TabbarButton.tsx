@@ -76,6 +76,7 @@ function TabbarButton({
         })}
       </Animated.View>
       <Animated.Text style={[{ color: labelColor }, animatedTextStyle]}>
+        {/* @ts-expect-error */}
         {label}
       </Animated.Text>
     </PlatformPressable>
