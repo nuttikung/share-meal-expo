@@ -1,3 +1,4 @@
+import { useCamera } from "@/hooks/useCamera";
 import type { TBill, TMember } from "@/types";
 import { createContext, PropsWithChildren, useState } from "react";
 
