@@ -1,6 +1,7 @@
+import { useAsyncStorage } from "@/hooks/useAsyncStorage";
 import { useCamera } from "@/hooks/useCamera";
 import type { TBill, TMember } from "@/types";
-import { createContext, PropsWithChildren, useState } from "react";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -12,9 +13,9 @@ type AppContextProps = {
   onUpdateBill: (bill: TBill) => void;
   onRemoveBill: (id: TBill["id"]) => void;
   // ----------------------------------------------------------------------
-  onAddMember: (member: TMember) => void;
-  onUpdateMember: (member: TMember) => void;
-  onRemoveMember: (id: TMember["id"]) => void;
+  onAddMember: (member: TMember) => Promise<void>;
+  onUpdateMember: (member: TMember) => Promise<void>;
+  onRemoveMember: (id: TMember["id"]) => Promise<void>;
 };
 
 // ----------------------------------------------------------------------
@@ -25,7 +26,9 @@ const AppContext = createContext<AppContextProps | null>(null);
 
 function AppContextProvider({ children }: PropsWithChildren) {
   const [bills, setBills] = useState<AppContextProps["bills"]>([]);
-  const [members, setMembers] = useState<AppContextProps["members"]>([]);
+
+  const billsStorage = useAsyncStorage<AppContextProps["bills"]>("bills", []);
+  const members = useAsyncStorage<AppContextProps["members"]>("members", []);
 
   // ----------------------------------------------------------------------
 
@@ -47,29 +50,35 @@ function AppContextProvider({ children }: PropsWithChildren) {
 
   // ----------------------------------------------------------------------
 
-  const onAddMember = (member: TMember) => {
-    setMembers((prev) => [...prev, member]);
+  const onAddMember = async (member: TMember) => {
+    const nextMember = [...members.state, member];
+    await members.setState(nextMember);
   };
 
-  const onUpdateMember = (member: TMember) => {
-    setMembers((prev) =>
-      prev.map((record) =>
-        record.id === member["id"] ? { ...record, ...member } : record,
-      ),
+  const onUpdateMember = async (member: TMember) => {
+    const nextMember = members.state.map((record) =>
+      record.id === member["id"] ? { ...record, ...member } : record,
     );
+    await members.setState(nextMember);
   };
 
-  const onRemoveMember = (id: TMember["id"]) => {
-    setMembers((prev) => prev.filter((record) => record.id !== id));
+  const onRemoveMember = async (id: TMember["id"]) => {
+    const nextMember = members.state.filter((record) => record.id !== id);
+    await members.setState(nextMember);
   };
 
   // ----------------------------------------------------------------------
+
+  // Autosave Bill to local storage
+  useEffect(() => {
+    billsStorage.setState(bills);
+  }, [bills]);
 
   return (
     <AppContext.Provider
       value={{
         bills,
-        members,
+        members: members.state,
         onAddBill,
         onUpdateBill,
         onRemoveBill,
@@ -83,4 +92,4 @@ function AppContextProvider({ children }: PropsWithChildren) {
   );
 }
 
-export { AppContextProvider };
+export { AppContextProvider, AppContext };
