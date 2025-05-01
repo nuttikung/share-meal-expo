@@ -8,6 +8,8 @@ import {
   Pressable,
 } from "react-native";
 
+import { LegendList } from "@legendapp/list";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Collapsible } from "@/components/Collapsible";
 import { ExternalLink } from "@/components/ExternalLink";
@@ -45,9 +47,11 @@ const styles = StyleSheet.create({
 // ----------------------------------------------------------------------
 
 function TabMemberScreen() {
-  const { onAddMember } = useAppContext();
+  const { members, onAddMember } = useAppContext();
   const backgroundColor = useThemeColor({}, "background");
   const [name, setName] = useState("");
+
+  console.log("line 54 members: ", members);
 
   const handleChange = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     const value = e.nativeEvent.text;
@@ -55,12 +59,7 @@ function TabMemberScreen() {
   };
 
   const handleAddMember = () => {
-    const member: TMember = {
-      id: "1",
-      name,
-      paid: false,
-    };
-    // console.log("line 65 members: ", member);
+    const member: TMember = { id: "", name, paid: false };
     onAddMember(member);
   };
 
@@ -77,16 +76,46 @@ function TabMemberScreen() {
           placeholder="เช่น จอห์น นัท แตงกวา ต้นไม้ มังกร ปลาทอง"
           value={name}
           onChange={handleChange}
+          onSubmitEditing={handleAddMember}
         />
         <Pressable onPress={handleAddMember}>
           <ThemedText>Add Member</ThemedText>
         </Pressable>
+        <LegendList
+          data={members}
+          keyExtractor={(member) => member.id}
+          renderItem={({ item }) => <MemberItem {...item} />}
+          estimatedItemSize={320}
+        />
       </SafeAreaView>
     </ScrollView>
   );
 }
 
 export default TabMemberScreen;
+
+// ----------------------------------------------------------------------
+
+type MemberItemProps = TMember;
+
+function MemberItem(member: MemberItemProps) {
+  const { name, paid } = member;
+  const { onUpdateMember } = useAppContext();
+
+  const handlePaidPress = () => {
+    const nextMember = { ...member, paid: !paid };
+    onUpdateMember(nextMember);
+  };
+
+  return (
+    <ThemedView>
+      <Pressable onPress={handlePaidPress}>
+        <ThemedText>{name}</ThemedText>
+        <ThemedText>{paid}</ThemedText>
+      </Pressable>
+    </ThemedView>
+  );
+}
 
 // export default function TabTwoScreen() {
 //   return (

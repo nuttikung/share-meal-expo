@@ -9,12 +9,45 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
-
+import { type SQLiteDatabase, SQLiteProvider } from "expo-sqlite";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AppContextProvider } from "@/context/app/app-context-provider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+// ----------------------------------------------------------------------
+const DATABASE_VERSION = 1;
+
+async function migrateDbIfNeeded(db: SQLiteDatabase) {
+  try {
+    const result = await db.getFirstAsync<{
+      user_version: number;
+    }>("PRAGMA user_version");
+
+    if (result === null) {
+      return;
+    }
+
+    let user_version = result.user_version;
+
+    if (user_version >= DATABASE_VERSION) {
+      return;
+    }
+
+    if (user_version === 0) {
+      const QUERY = `
+        PRAGMA journal_mode = 'wal';
+        CREATE TABLE IF NOT EXISTS members (id INTEGER PRIMARY KEY NOT NULL, name TEXT, paid INT);
+        `;
+      await db.execAsync(QUERY);
+      user_version = 1;
+    }
+    await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+  } catch (error) {}
+}
+
+// ----------------------------------------------------------------------
 
 function RootLayout() {
   const colorScheme = useColorScheme();
@@ -34,13 +67,15 @@ function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <AppContextProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </AppContextProvider>
+      <SQLiteProvider databaseName="db.sharemeal" onInit={migrateDbIfNeeded}>
+        <AppContextProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+        </AppContextProvider>
+      </SQLiteProvider>
     </ThemeProvider>
   );
 }

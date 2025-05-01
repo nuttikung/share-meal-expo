@@ -1,7 +1,7 @@
-import { useAsyncStorage } from "@/hooks/useAsyncStorage";
-import { useCamera } from "@/hooks/useCamera";
+import { useSQLiteContext } from "expo-sqlite";
 import type { TBill, TMember } from "@/types";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
+// import { useCamera } from "@/hooks/useCamera";
 
 // ----------------------------------------------------------------------
 
@@ -25,10 +25,9 @@ const AppContext = createContext<AppContextProps | null>(null);
 // ----------------------------------------------------------------------
 
 function AppContextProvider({ children }: PropsWithChildren) {
+  const db = useSQLiteContext();
   const [bills, setBills] = useState<AppContextProps["bills"]>([]);
-
-  const billsStorage = useAsyncStorage<AppContextProps["bills"]>("bills", []);
-  const members = useAsyncStorage<AppContextProps["members"]>("members", []);
+  const [members, setMembers] = useState<AppContextProps["members"]>([]);
 
   // ----------------------------------------------------------------------
 
@@ -51,34 +50,79 @@ function AppContextProvider({ children }: PropsWithChildren) {
   // ----------------------------------------------------------------------
 
   const onAddMember = async (member: TMember) => {
-    const nextMember = [...members.state, member];
-    await members.setState(nextMember);
+    if (member.name === "") {
+      return;
+    }
+
+    try {
+      const QUERY = "INSERT INTO members (name, paid) VALUES (?, ?);";
+      await db.runAsync(QUERY, member.name, member.paid);
+    } catch (error) {
+      // update db failed
+    } finally {
+      await restoreMembers();
+    }
   };
 
   const onUpdateMember = async (member: TMember) => {
-    const nextMember = members.state.map((record) =>
-      record.id === member["id"] ? { ...record, ...member } : record,
-    );
-    await members.setState(nextMember);
+    try {
+      member.name;
+      const task = [];
+      const updateName = db.runAsync(
+        "UPDATE members SET name = ? WHERE id = ?;",
+        member.name,
+        member.id,
+      );
+      const updatePaid = db.runAsync(
+        "UPDATE members SET paid = ? WHERE id = ?;",
+        member.paid,
+        member.id,
+      );
+      task.push(updateName);
+      task.push(updatePaid);
+      await Promise.all(task);
+    } catch (error) {
+      // error here
+    } finally {
+      await restoreMembers();
+    }
   };
 
   const onRemoveMember = async (id: TMember["id"]) => {
-    const nextMember = members.state.filter((record) => record.id !== id);
-    await members.setState(nextMember);
+    try {
+      const QUERY = "DELETE FROM members WHERE id = ?;";
+      await db.runAsync(QUERY, id);
+    } catch (error) {
+      // delete failed
+    } finally {
+      await restoreMembers();
+    }
   };
 
   // ----------------------------------------------------------------------
 
-  // Autosave Bill to local storage
+  const restoreMembers = async () => {
+    try {
+      const query = await db.prepareAsync("SELECT * FROM MEMBERS");
+      const result = await query.executeAsync<TMember>();
+      const allMember = await result.getAllAsync();
+      console.log("line 83 result: ", allMember);
+      setMembers(allMember);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Restore from SQLite
   useEffect(() => {
-    billsStorage.setState(bills);
-  }, [bills]);
+    restoreMembers();
+  }, []);
 
   return (
     <AppContext.Provider
       value={{
         bills,
-        members: members.state,
+        members,
         onAddBill,
         onUpdateBill,
         onRemoveBill,
