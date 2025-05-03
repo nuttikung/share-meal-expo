@@ -8,8 +8,6 @@ import {
   Pressable,
 } from "react-native";
 
-import { LegendList } from "@legendapp/list";
-
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Collapsible } from "@/components/Collapsible";
 import { ExternalLink } from "@/components/ExternalLink";
@@ -22,6 +20,7 @@ import { ThemeTextInput } from "@/components/ThemeTextInput";
 import { useState } from "react";
 import { useAppContext } from "@/context/app/useAppContext";
 import type { TMember } from "@/types/member";
+import { MemberList } from "@/sections/member/member-list";
 
 // ----------------------------------------------------------------------
 
@@ -81,12 +80,7 @@ function TabMemberScreen() {
         <Pressable onPress={handleAddMember}>
           <ThemedText>Add Member</ThemedText>
         </Pressable>
-        <LegendList
-          data={members}
-          keyExtractor={(member) => member.id}
-          renderItem={({ item }) => <MemberItem {...item} />}
-          estimatedItemSize={320}
-        />
+        <MemberList />
       </SafeAreaView>
     </ScrollView>
   );
@@ -96,23 +90,32 @@ export default TabMemberScreen;
 
 // ----------------------------------------------------------------------
 
-type MemberItemProps = TMember;
+type PaidBadge = {
+  paid: boolean;
+};
 
-function MemberItem(member: MemberItemProps) {
-  const { name, paid } = member;
-  const { onUpdateMember } = useAppContext();
-
-  const handlePaidPress = () => {
-    const nextMember = { ...member, paid: !paid };
-    onUpdateMember(nextMember);
-  };
+function PaidBadge({ paid }: PaidBadge) {
+  const color = useThemeColor({}, paid ? "paidBadgeText" : "unpPidBadgeText");
+  const backgroundColor = useThemeColor(
+    {},
+    paid ? "paidBadgeBackground" : "unPaidBadgeBackground",
+  );
+  const text = paid ? "จ่ายแล้ว" : "ยังไม่จ่าย";
 
   return (
-    <ThemedView>
-      <Pressable onPress={handlePaidPress}>
-        <ThemedText>{name}</ThemedText>
-        <ThemedText>{paid}</ThemedText>
-      </Pressable>
+    <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
+      <ThemedText
+        style={{
+          paddingHorizontal: 8,
+          paddingVertical: 4,
+          borderRadius: 10,
+          backgroundColor,
+          color,
+        }}
+      >
+        {text}
+      </ThemedText>
+      ;
     </ThemedView>
   );
 }

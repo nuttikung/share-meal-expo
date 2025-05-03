@@ -14,7 +14,6 @@ function TabLayout() {
 
   return (
     <Tabs
-      // initialRouteName="order"
       tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
         headerShown: false,

@@ -20,6 +20,11 @@ type TColor = {
   // Input
   inputBorderColor: string;
   inputPlacholderColor: string;
+  // Paid Badge
+  paidBadgeBackground: string;
+  paidBadgeText: string;
+  unPaidBadgeBackground: string;
+  unpPidBadgeText: string;
 };
 
 // ----------------------------------------------------------------------
@@ -39,6 +44,11 @@ const LIGHT_PALLETE: TColor = {
   // Input
   inputBorderColor: "#DFE4EA",
   inputPlacholderColor: "#C9CDD1",
+  // Paid Badge
+  paidBadgeBackground: "#dcfce7",
+  paidBadgeText: "#008236",
+  unPaidBadgeBackground: "#ffe2e2",
+  unpPidBadgeText: "#c10007",
 };
 
 const DARK_PALLETE: TColor = {
@@ -56,6 +66,11 @@ const DARK_PALLETE: TColor = {
   divider: "#FFF",
   inputBorderColor: "#FFF",
   inputPlacholderColor: "#FFF",
+  // Paid Badge
+  paidBadgeBackground: "#0d542b",
+  paidBadgeText: "#dcfce7",
+  unPaidBadgeBackground: "#c10007",
+  unpPidBadgeText: "#ffe2e2",
 };
 
 // ----------------------------------------------------------------------
