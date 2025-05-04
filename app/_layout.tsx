@@ -44,7 +44,9 @@ async function migrateDbIfNeeded(db: SQLiteDatabase) {
       user_version = 1;
     }
     await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
-  } catch (error) {}
+  } catch (error) {
+    // error here.
+  }
 }
 
 // ----------------------------------------------------------------------
@@ -52,7 +54,7 @@ async function migrateDbIfNeeded(db: SQLiteDatabase) {
 function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    SukhumvitSet: require("../assets/fonts/SukhumvitSet-Medium.ttf"),
   });
 
   useEffect(() => {

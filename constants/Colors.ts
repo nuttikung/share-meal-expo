@@ -25,6 +25,14 @@ type TColor = {
   paidBadgeText: string;
   unPaidBadgeBackground: string;
   unpPidBadgeText: string;
+
+  primary: string;
+  secondary: string;
+  error: string;
+  warning: string;
+  info: string;
+  // Button
+  buttonLabelColor: string;
 };
 
 // ----------------------------------------------------------------------
@@ -49,6 +57,14 @@ const LIGHT_PALLETE: TColor = {
   paidBadgeText: "#008236",
   unPaidBadgeBackground: "#ffe2e2",
   unpPidBadgeText: "#c10007",
+  // ----------------------------------------------------------------------
+  primary: "#ff6900",
+  secondary: "#00c951",
+  error: "#fb2c36",
+  warning: "#efb100",
+  info: "#00a6f4",
+  // Button
+  buttonLabelColor: "#FFF",
 };
 
 const DARK_PALLETE: TColor = {
@@ -71,6 +87,14 @@ const DARK_PALLETE: TColor = {
   paidBadgeText: "#dcfce7",
   unPaidBadgeBackground: "#c10007",
   unpPidBadgeText: "#ffe2e2",
+  // ----------------------------------------------------------------------
+  primary: "#ffd6a8",
+  secondary: "#b9f8cf",
+  error: "#ffc9c9",
+  warning: "#fff085",
+  info: "#b8e6fe",
+  // Button
+  buttonLabelColor: "#000",
 };
 
 // ----------------------------------------------------------------------

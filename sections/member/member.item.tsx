@@ -1,3 +1,4 @@
+import { PaidBadge } from "@/components/PaidBadge";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useAppContext } from "@/context/app/useAppContext";
@@ -11,7 +12,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    marginHorizontal: 10,
   },
   detailContainer: {
     flex: 1,
@@ -36,14 +36,18 @@ type MemberItemProps = TMember;
 // ----------------------------------------------------------------------
 
 function MemberItem(member: MemberItemProps) {
-  const { name, paid } = member;
-  const { onUpdateMember } = useAppContext();
+  const { name, paid, id } = member;
+  const { onUpdateMember, onRemoveMember } = useAppContext();
 
   // ----------------------------------------------------------------------
 
   const handlePaidPress = () => {
     const nextMember = { ...member, paid: !paid };
     onUpdateMember(nextMember);
+  };
+
+  const handleDeletePress = () => {
+    onRemoveMember(id);
   };
 
   // ----------------------------------------------------------------------
@@ -53,13 +57,18 @@ function MemberItem(member: MemberItemProps) {
       <ThemedView style={styles.detailContainer}>
         <Pressable onPress={handlePaidPress} style={{ flex: 1 }}>
           <ThemedText style={[paid && styles.paid]}>{name}</ThemedText>
-          {/* <PaidBadge paid={!!paid} /> */}
+          <PaidBadge paid={!!paid} />
         </Pressable>
         <ThemedView style={styles.summaryContainer}>
           <ThemedText type="subtitle">{paid}</ThemedText>
           <ThemedText type="subtitle">
             <Ionicons size={20} name="list" />
           </ThemedText>
+          <Pressable onPress={handleDeletePress}>
+            <ThemedText type="subtitle">
+              <Ionicons color="red" size={20} name="trash-bin" />
+            </ThemedText>
+          </Pressable>
         </ThemedView>
       </ThemedView>
     </ThemedView>

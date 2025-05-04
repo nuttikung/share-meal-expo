@@ -21,6 +21,7 @@ import { useState } from "react";
 import { useAppContext } from "@/context/app/useAppContext";
 import type { TMember } from "@/types/member";
 import { MemberList } from "@/sections/member/member-list";
+import { ThemeButton } from "@/components/ThemeButton";
 
 // ----------------------------------------------------------------------
 
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flex: 1,
+    paddingHorizontal: 10,
   },
   headerImage: {
     color: "#808080",
@@ -38,19 +40,21 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   titleContainer: {
+    marginTop: 10,
     flexDirection: "row",
     gap: 8,
+  },
+  memberInput: {
+    marginVertical: 10,
   },
 });
 
 // ----------------------------------------------------------------------
 
 function TabMemberScreen() {
-  const { members, onAddMember } = useAppContext();
+  const { onAddMember } = useAppContext();
   const backgroundColor = useThemeColor({}, "background");
   const [name, setName] = useState("");
-
-  console.log("line 54 members: ", members);
 
   const handleChange = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     const value = e.nativeEvent.text;
@@ -60,6 +64,7 @@ function TabMemberScreen() {
   const handleAddMember = () => {
     const member: TMember = { id: "", name, paid: false };
     onAddMember(member);
+    setName("");
   };
 
   return (
@@ -69,17 +74,18 @@ function TabMemberScreen() {
     >
       <SafeAreaView style={styles.safeAreaContainer}>
         <ThemedView style={styles.titleContainer}>
-          <ThemedText type="title">Explore</ThemedText>
+          <ThemedText type="title">รายชื่อคนจ่าย</ThemedText>
         </ThemedView>
         <ThemeTextInput
+          style={styles.memberInput}
           placeholder="เช่น จอห์น นัท แตงกวา ต้นไม้ มังกร ปลาทอง"
           value={name}
           onChange={handleChange}
           onSubmitEditing={handleAddMember}
         />
-        <Pressable onPress={handleAddMember}>
-          <ThemedText>Add Member</ThemedText>
-        </Pressable>
+        <ThemedView style={{ marginVertical: 10 }}>
+          <ThemeButton label="เพิ่มรายชื่อคนจ่าย" onPress={handleAddMember} />
+        </ThemedView>
         <MemberList />
       </SafeAreaView>
     </ScrollView>
@@ -87,38 +93,6 @@ function TabMemberScreen() {
 }
 
 export default TabMemberScreen;
-
-// ----------------------------------------------------------------------
-
-type PaidBadge = {
-  paid: boolean;
-};
-
-function PaidBadge({ paid }: PaidBadge) {
-  const color = useThemeColor({}, paid ? "paidBadgeText" : "unpPidBadgeText");
-  const backgroundColor = useThemeColor(
-    {},
-    paid ? "paidBadgeBackground" : "unPaidBadgeBackground",
-  );
-  const text = paid ? "จ่ายแล้ว" : "ยังไม่จ่าย";
-
-  return (
-    <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
-      <ThemedText
-        style={{
-          paddingHorizontal: 8,
-          paddingVertical: 4,
-          borderRadius: 10,
-          backgroundColor,
-          color,
-        }}
-      >
-        {text}
-      </ThemedText>
-      ;
-    </ThemedView>
-  );
-}
 
 // export default function TabTwoScreen() {
 //   return (

@@ -4,21 +4,18 @@ import { StyleSheet, TextInput, TextInputProps } from "react-native";
 const styles = StyleSheet.create({
   sm: {
     height: 30,
-    margin: 12,
     borderWidth: 1,
-    padding: 10,
+    paddingHorizontal: 5,
   },
   md: {
     height: 40,
-    margin: 12,
     borderWidth: 1,
-    padding: 10,
+    paddingHorizontal: 5,
   },
   lg: {
     height: 50,
-    margin: 12,
     borderWidth: 1,
-    padding: 10,
+    paddingHorizontal: 5,
   },
 });
 
@@ -36,6 +33,7 @@ function ThemeTextInput({
   size = "md",
   lightColor,
   darkColor,
+  style,
   ...otherProps
 }: ThemeTextInputProps) {
   const borderColor = useThemeColor(
@@ -54,6 +52,7 @@ function ThemeTextInput({
         size === "sm" ? styles.sm : undefined,
         size === "md" ? styles.md : undefined,
         size === "lg" ? styles.lg : undefined,
+        style,
       ]}
       placeholderTextColor={placholderColor}
       {...otherProps}
