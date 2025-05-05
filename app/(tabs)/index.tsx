@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
     marginVertical: 3,
     marginHorizontal: 12,
   },
+  input: {
+    margin: 10,
+  },
 });
 
 // ----------------------------------------------------------------------
@@ -60,11 +63,15 @@ function OrderScreen() {
           <ThemedText type="subtitle" style={styles.label}>
             ชื่อรายการ
           </ThemedText>
-          <ThemeTextInput placeholder="เช่น บุฟเฟ่ต์, หมูกระทะ, ชาเขียว, เบียร์ (โปร)" />
+          <ThemeTextInput
+            style={styles.input}
+            placeholder="เช่น บุฟเฟ่ต์, หมูกระทะ, ชาเขียว, เบียร์ (โปร)"
+          />
           <ThemedText type="subtitle" style={styles.label}>
             ราคา
           </ThemedText>
           <ThemeTextInput
+            style={styles.input}
             keyboardType="numeric"
             placeholder="เช่น 99, 100, 345, 500"
           />

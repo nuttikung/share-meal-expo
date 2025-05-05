@@ -1,9 +1,9 @@
 import { Tabs } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { HapticTab } from "@/components/HapticTab";
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -47,7 +47,7 @@ function TabLayout() {
         options={{
           title: "รายการอาหาร",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="list.bullet" color={color} />
+            <Ionicons size={28} name="list" color={color} />
           ),
         }}
       />
@@ -56,7 +56,7 @@ function TabLayout() {
         options={{
           title: "รายชื่อคนจ่าย",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="person.2.fill" color={color} />
+            <Ionicons size={28} name="people" color={color} />
           ),
         }}
       />
