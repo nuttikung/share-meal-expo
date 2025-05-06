@@ -1,4 +1,10 @@
-import { StyleSheet, ScrollView, Pressable } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+} from "react-native";
 import { useRouter } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
@@ -10,6 +16,8 @@ import { ThemeTextInput } from "@/components/ThemeTextInput";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useCamera } from "@/hooks/useCamera";
 import { getCameraStatus } from "@/utils/camera";
+import { useRef, useState } from "react";
+import { TextInput } from "react-native";
 
 // ----------------------------------------------------------------------
 
@@ -43,9 +51,37 @@ const styles = StyleSheet.create({
 
 function OrderScreen() {
   const router = useRouter();
+  const nameRef = useRef<TextInput>(null);
+  const priceRef = useRef<TextInput>(null);
+
+  const [name, setName] = useState<string>("");
+  const [price, setPrice] = useState<string>("");
+
   const backgroundColor = useThemeColor({}, "background");
 
   const { permission, requestPermission } = useCamera();
+
+  // ----------------------------------------------------------------------
+
+  const handleNameChange = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>,
+  ) => {
+    const value = e.nativeEvent.text;
+    setName(value);
+  };
+
+  const handlePriceChange = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>,
+  ) => {
+    const value = e.nativeEvent.text;
+    setPrice(value);
+  };
+
+  const handleNameSubmit = () => {
+    priceRef.current?.focus();
+  };
+
+  // ----------------------------------------------------------------------
 
   // Camera status
   const cameraPermission = getCameraStatus(permission);
@@ -65,19 +101,29 @@ function OrderScreen() {
           </ThemedText>
           <ThemeTextInput
             style={styles.input}
+            ref={nameRef}
+            value={name}
+            returnKeyType="next"
             placeholder="เช่น บุฟเฟ่ต์, หมูกระทะ, ชาเขียว, เบียร์ (โปร)"
+            onChange={handleNameChange}
+            onSubmitEditing={handleNameSubmit}
           />
           <ThemedText type="subtitle" style={styles.label}>
             ราคา
           </ThemedText>
           <ThemeTextInput
+            ref={priceRef}
+            value={price}
+            onChange={handlePriceChange}
             style={styles.input}
+            returnKeyType="done"
             keyboardType="numeric"
             placeholder="เช่น 99, 100, 345, 500"
+            submitBehavior="blurAndSubmit"
           />
           <Pressable onPress={requestPermission}>
             <ThemedText type="subtitle" style={styles.label}>
-              icon camera
+              render member selection view
             </ThemedText>
           </Pressable>
         </ThemedView>

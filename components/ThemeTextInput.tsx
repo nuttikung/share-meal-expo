@@ -1,4 +1,5 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { forwardRef, RefObject } from "react";
 import { StyleSheet, TextInput, TextInputProps } from "react-native";
 
 const styles = StyleSheet.create({
@@ -29,35 +30,32 @@ type ThemeTextInputProps = TextInputProps & {
 
 // ----------------------------------------------------------------------
 
-function ThemeTextInput({
-  size = "md",
-  lightColor,
-  darkColor,
-  style,
-  ...otherProps
-}: ThemeTextInputProps) {
-  const borderColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    "inputBorderColor",
-  );
-  const placholderColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    "inputPlacholderColor",
-  );
+const ThemeTextInput = forwardRef<TextInput, ThemeTextInputProps>(
+  ({ size = "md", lightColor, darkColor, style, ...otherProps }, ref) => {
+    const borderColor = useThemeColor(
+      { light: lightColor, dark: darkColor },
+      "inputBorderColor",
+    );
+    const placholderColor = useThemeColor(
+      { light: lightColor, dark: darkColor },
+      "inputPlacholderColor",
+    );
 
-  return (
-    <TextInput
-      style={[
-        { borderColor },
-        size === "sm" ? styles.sm : undefined,
-        size === "md" ? styles.md : undefined,
-        size === "lg" ? styles.lg : undefined,
-        style,
-      ]}
-      placeholderTextColor={placholderColor}
-      {...otherProps}
-    />
-  );
-}
+    return (
+      <TextInput
+        ref={ref}
+        style={[
+          { borderColor },
+          size === "sm" ? styles.sm : undefined,
+          size === "md" ? styles.md : undefined,
+          size === "lg" ? styles.lg : undefined,
+          style,
+        ]}
+        placeholderTextColor={placholderColor}
+        {...otherProps}
+      />
+    );
+  },
+);
 
 export { ThemeTextInput };
