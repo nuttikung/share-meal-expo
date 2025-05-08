@@ -48,3 +48,9 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+## Todo
+
+[ ] - WASM from rust to make OCR Image (Migrate Axum logic to lib)
+[ ] - React native (WASM biden) refer to https://github.com/cawfree/react-native-webassembly
