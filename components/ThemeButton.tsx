@@ -33,6 +33,19 @@ type ThemeButtonProps = Omit<PressableProps, "style"> & {
 
 // ----------------------------------------------------------------------
 
+/**
+ * A themed button component that applies the application's theme colors.
+ * @example <ThemeButton label="click me" />
+ *
+ * @typedef {object} ThemeButtonProps
+ * @property {string} [type='contained'] - Button style type one of outline or contained
+ * @property {object} [containerStyle] - Custom styles for the button container
+ * @property {object} [textStyle] - Custom styles for the button text
+ * @property {string | ReactNode} label - Text or ReactNode to display as the button label
+ *
+ * @param {ThemeButtonProps} props - Component props
+ * @returns {JSX.Element} Rendered ThemeButton component
+ */
 function ThemeButton(props: ThemeButtonProps) {
   const {
     type = "contained",

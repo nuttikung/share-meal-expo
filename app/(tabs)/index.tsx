@@ -18,6 +18,8 @@ import { useCamera } from "@/hooks/useCamera";
 import { getCameraStatus } from "@/utils/camera";
 import { useRef, useState } from "react";
 import { TextInput } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { ThemeButton } from "@/components/ThemeButton";
 
 // ----------------------------------------------------------------------
 
@@ -126,6 +128,7 @@ function OrderScreen() {
               render member selection view
             </ThemedText>
           </Pressable>
+          <UploadImage />
         </ThemedView>
       </SafeAreaView>
     </ScrollView>
@@ -140,6 +143,32 @@ function EmptyStat() {
     <ThemedView style={[{ borderColor }, styles.orderListContainer]}>
       <MaterialIcons size={110} color={iconColor} name="payments" />
       <ThemedText type="subtitle">ยังไม่มีรายการ</ThemedText>
+    </ThemedView>
+  );
+}
+
+function UploadImage() {
+  const [image, setImage] = useState<string | null>(null);
+
+  const handlePickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  return (
+    <ThemedView>
+      <ThemeButton label="Pick from photo" onPress={handlePickImage} />
     </ThemedView>
   );
 }
