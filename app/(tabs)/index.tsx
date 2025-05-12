@@ -20,6 +20,7 @@ import { useRef, useState } from "react";
 import { TextInput } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { ThemeButton } from "@/components/ThemeButton";
+import OcrModule from "@/modules/ocr-module";
 
 // ----------------------------------------------------------------------
 
@@ -153,15 +154,20 @@ function UploadImage() {
   const handlePickImage = async () => {
     // No permissions request is necessary for launching the image library
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
+      mediaTypes: ["images"],
+      allowsMultipleSelection: false,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result.assets);
 
     if (!result.canceled) {
+      const recognizeText = await OcrModule.recognizeTextAsync(
+        result.assets[0].uri,
+      );
+      console.log(recognizeText);
       setImage(result.assets[0].uri);
     }
   };
