@@ -8,6 +8,7 @@ import {
 import { useRouter } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
+import { isNumeric } from "voca";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -93,6 +94,7 @@ function OrderScreen() {
   return (
     <ScrollView
       className="bg-white"
+      contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={[{ backgroundColor }, styles.scrollViewContainer]}
     >
       <SafeAreaView style={styles.safeAreaContainer}>
@@ -150,8 +152,13 @@ function EmptyStat() {
 
 function UploadImage() {
   const [image, setImage] = useState<string | null>(null);
+  const [pickableOrder, setPickableOrder] = useState<Array<string>>([]);
+  const [pickablePrice, setPickablePrice] = useState<Array<string>>([]);
 
   const handlePickImage = async () => {
+    const orderList = new Set<string>();
+    const priceList = new Set<string>();
+
     // No permissions request is necessary for launching the image library
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
@@ -161,13 +168,25 @@ function UploadImage() {
       quality: 1,
     });
 
-    // console.log(result.assets);
-
     if (!result.canceled) {
       const recognizeText = await OcrModule.recognizeTextAsync(
         result.assets[0].uri,
       );
-      console.log(recognizeText);
+
+      const possibilitiesText = recognizeText.split("\n");
+      if (possibilitiesText.length > 0) {
+        for (let i = 0, len = possibilitiesText.length; i < len; i++) {
+          const element = possibilitiesText[i];
+          if (isNumeric(element)) {
+            priceList.add(element);
+          } else {
+            orderList.add(element);
+          }
+        }
+      }
+
+      setPickableOrder(Array.from(orderList));
+      setPickablePrice(Array.from(priceList));
       setImage(result.assets[0].uri);
     }
   };
@@ -175,6 +194,18 @@ function UploadImage() {
   return (
     <ThemedView>
       <ThemeButton label="Pick from photo" onPress={handlePickImage} />
+      <ThemedView>
+        {pickableOrder.length > 0 &&
+          pickableOrder.map((text) => (
+            <ThemedText key={text}>{text}</ThemedText>
+          ))}
+      </ThemedView>
+      {/* <ThemedView>
+        {pickablePrice.length > 0 &&
+          pickablePrice.map((text) => (
+            <ThemedText key={text}>{text}</ThemedText>
+          ))}
+      </ThemedView> */}
     </ThemedView>
   );
 }
