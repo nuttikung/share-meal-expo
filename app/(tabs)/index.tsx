@@ -4,6 +4,7 @@ import {
   Pressable,
   NativeSyntheticEvent,
   TextInputChangeEventData,
+  StatusBar,
 } from "react-native";
 import { useRouter } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -28,6 +29,7 @@ import OcrModule from "@/modules/ocr-module";
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
+    paddingTop: StatusBar.currentHeight,
   },
   scrollViewContainer: {
     flex: 1,
@@ -39,15 +41,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "dashed",
   },
-  orderForm: {
-    flex: 1,
-  },
   label: {
     marginVertical: 3,
     marginHorizontal: 12,
   },
   input: {
     margin: 10,
+  },
+  text: {
+    fontSize: 42,
+    padding: 12,
   },
 });
 
@@ -92,49 +95,46 @@ function OrderScreen() {
   console.log(cameraPermission);
 
   return (
-    <ScrollView
-      className="bg-white"
-      contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={[{ backgroundColor }, styles.scrollViewContainer]}
-    >
-      <SafeAreaView style={styles.safeAreaContainer}>
+    <SafeAreaView edges={["top"]} style={styles.safeAreaContainer}>
+      <ScrollView
+        contentContainerStyle={[
+          { backgroundColor },
+          styles.scrollViewContainer,
+        ]}
+      >
         <OverallStat />
         <EmptyStat />
-        <ThemedView style={styles.orderForm}>
-          <ThemedText type="subtitle" style={styles.label}>
-            ชื่อรายการ
-          </ThemedText>
-          <ThemeTextInput
-            style={styles.input}
-            ref={nameRef}
-            value={name}
-            returnKeyType="next"
-            placeholder="เช่น บุฟเฟ่ต์, หมูกระทะ, ชาเขียว, เบียร์ (โปร)"
-            onChange={handleNameChange}
-            onSubmitEditing={handleNameSubmit}
-          />
-          <ThemedText type="subtitle" style={styles.label}>
-            ราคา
-          </ThemedText>
-          <ThemeTextInput
-            ref={priceRef}
-            value={price}
-            onChange={handlePriceChange}
-            style={styles.input}
-            returnKeyType="done"
-            keyboardType="numeric"
-            placeholder="เช่น 99, 100, 345, 500"
-            submitBehavior="blurAndSubmit"
-          />
-          <Pressable onPress={requestPermission}>
-            <ThemedText type="subtitle" style={styles.label}>
-              render member selection view
-            </ThemedText>
-          </Pressable>
+        <ThemedText type="subtitle" style={styles.label}>
+          ชื่อรายการ
+        </ThemedText>
+        <ThemeTextInput
+          style={styles.input}
+          ref={nameRef}
+          value={name}
+          returnKeyType="next"
+          placeholder="เช่น บุฟเฟ่ต์, หมูกระทะ, ชาเขียว, เบียร์ (โปร)"
+          onChange={handleNameChange}
+          onSubmitEditing={handleNameSubmit}
+        />
+        <ThemedText type="subtitle" style={styles.label}>
+          ราคา
+        </ThemedText>
+        <ThemeTextInput
+          ref={priceRef}
+          value={price}
+          onChange={handlePriceChange}
+          style={styles.input}
+          returnKeyType="done"
+          keyboardType="numeric"
+          placeholder="เช่น 99, 100, 345, 500"
+          submitBehavior="blurAndSubmit"
+        />
+        <Pressable onPress={requestPermission}>
           <UploadImage />
-        </ThemedView>
-      </SafeAreaView>
-    </ScrollView>
+          <ThemedText type="subtitle">render member selection view</ThemedText>
+        </Pressable>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
