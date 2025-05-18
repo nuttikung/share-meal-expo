@@ -6,14 +6,13 @@ import {
   TextInputChangeEventData,
   StatusBar,
 } from "react-native";
-import { useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 import { isNumeric } from "voca";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { OverallStat } from "@/sections/overall-stat";
 import { ThemeTextInput } from "@/components/ThemeTextInput";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useCamera } from "@/hooks/useCamera";
@@ -23,6 +22,8 @@ import { TextInput } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { ThemeButton } from "@/components/ThemeButton";
 import OcrModule from "@/modules/ocr-module";
+import { OrderOverview } from "@/sections/order/order-overview";
+import { OrderView } from "@/sections/order";
 
 // ----------------------------------------------------------------------
 
@@ -102,9 +103,10 @@ function OrderScreen() {
           styles.scrollViewContainer,
         ]}
       >
-        <OverallStat />
+        <OrderView />
+        {/* <OrderOverview /> */}
         <EmptyStat />
-        <ThemedText type="subtitle" style={styles.label}>
+        {/* <ThemedText type="subtitle" style={styles.label}>
           ชื่อรายการ
         </ThemedText>
         <ThemeTextInput
@@ -128,7 +130,7 @@ function OrderScreen() {
           keyboardType="numeric"
           placeholder="เช่น 99, 100, 345, 500"
           submitBehavior="blurAndSubmit"
-        />
+        /> */}
         <Pressable onPress={requestPermission}>
           <UploadImage />
           <ThemedText type="subtitle">render member selection view</ThemedText>
@@ -167,6 +169,9 @@ function UploadImage() {
       aspect: [4, 3],
       quality: 1,
     });
+
+    router.navigate("/ocr-order-import");
+    return;
 
     if (!result.canceled) {
       const recognizeText = await OcrModule.recognizeTextAsync(

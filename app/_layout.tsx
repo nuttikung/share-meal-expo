@@ -75,6 +75,10 @@ function RootLayout() {
           <AppContextProvider>
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="ocr-order-import"
+                options={{ presentation: "modal" }}
+              />
               <Stack.Screen name="+not-found" />
             </Stack>
             <StatusBar style="auto" />

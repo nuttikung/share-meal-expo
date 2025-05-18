@@ -3,7 +3,7 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-const tintColorLight = "#0a7ea4";
+const tintColorLight = "#ff6900";
 const tintColorDark = "#fff";
 
 // ----------------------------------------------------------------------
@@ -18,6 +18,7 @@ type TColor = {
   tabIconSelected: string;
   divider: string;
   // Input
+  inputFontColor: string
   inputBorderColor: string;
   inputPlacholderColor: string;
   // Paid Badge
@@ -50,6 +51,7 @@ const LIGHT_PALLETE: TColor = {
   // ----------------------------------------------------------------------
   divider: "#DFE4EA",
   // Input
+  inputFontColor: "#000",
   inputBorderColor: "#DFE4EA",
   inputPlacholderColor: "#C9CDD1",
   // Paid Badge
@@ -80,6 +82,7 @@ const DARK_PALLETE: TColor = {
   // ----------------------------------------------------------------------
   // TODO: change divider for dark theme
   divider: "#FFF",
+  inputFontColor: "#FFF",
   inputBorderColor: "#FFF",
   inputPlacholderColor: "#FFF",
   // Paid Badge
@@ -88,13 +91,14 @@ const DARK_PALLETE: TColor = {
   unPaidBadgeBackground: "#c10007",
   unpPidBadgeText: "#ffe2e2",
   // ----------------------------------------------------------------------
-  primary: "#ffd6a8",
+  primary: "#ff6900",
+  // primary: "#ffd6a8",
   secondary: "#b9f8cf",
   error: "#ffc9c9",
   warning: "#fff085",
   info: "#b8e6fe",
   // Button
-  buttonLabelColor: "#000",
+  buttonLabelColor: "#FFF",
 };
 
 // ----------------------------------------------------------------------

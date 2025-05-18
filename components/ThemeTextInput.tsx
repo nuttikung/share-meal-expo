@@ -1,6 +1,12 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { forwardRef, RefObject } from "react";
-import { StyleSheet, TextInput, TextInputProps } from "react-native";
+import { forwardRef } from "react";
+import {
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextInput,
+  TextInputChangeEventData,
+  TextInputProps,
+} from "react-native";
 
 const styles = StyleSheet.create({
   sm: {
@@ -22,16 +28,40 @@ const styles = StyleSheet.create({
 
 // ----------------------------------------------------------------------
 
-type ThemeTextInputProps = TextInputProps & {
+type ThemeTextInputProps = Omit<TextInputProps, "onChange"> & {
   size?: "sm" | "md" | "lg";
+  type?: "text" | "number";
   lightColor?: string;
   darkColor?: string;
+  onChange?: (
+    e: NativeSyntheticEvent<TextInputChangeEventData> & {
+      rawValue: number | string;
+    },
+  ) => void | undefined;
 };
 
 // ----------------------------------------------------------------------
 
 const ThemeTextInput = forwardRef<TextInput, ThemeTextInputProps>(
-  ({ size = "md", lightColor, darkColor, style, ...otherProps }, ref) => {
+  (
+    {
+      size = "md",
+      type = "text",
+      lightColor,
+      darkColor,
+      style,
+      onChange = () => {},
+      value = "",
+      ...otherProps
+    },
+    ref,
+  ) => {
+    const formatValue = type === "number" && value === "0" ? "" : value;
+
+    const color = useThemeColor(
+      { light: lightColor, dark: darkColor },
+      "inputFontColor",
+    );
     const borderColor = useThemeColor(
       { light: lightColor, dark: darkColor },
       "inputBorderColor",
@@ -41,11 +71,30 @@ const ThemeTextInput = forwardRef<TextInput, ThemeTextInputProps>(
       "inputPlacholderColor",
     );
 
+    const handleChange = (
+      e: NativeSyntheticEvent<TextInputChangeEventData>,
+    ) => {
+      if (type === "number") {
+        onChange(
+          Object.assign(e, {
+            rawValue: Number(e.nativeEvent.text),
+          }),
+        );
+        return;
+      }
+
+      onChange(
+        Object.assign(e, {
+          rawValue: e.nativeEvent.text,
+        }),
+      );
+    };
+
     return (
       <TextInput
         ref={ref}
         style={[
-          { borderColor },
+          { borderColor, color },
           size === "sm" ? styles.sm : undefined,
           size === "md" ? styles.md : undefined,
           size === "lg" ? styles.lg : undefined,
@@ -53,6 +102,8 @@ const ThemeTextInput = forwardRef<TextInput, ThemeTextInputProps>(
         ]}
         placeholderTextColor={placholderColor}
         {...otherProps}
+        value={formatValue}
+        onChange={handleChange}
       />
     );
   },

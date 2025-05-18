@@ -20,26 +20,7 @@ const styles = StyleSheet.create({
 
 // ----------------------------------------------------------------------
 
-// function OverallStat() {
-//   return (
-//     <>
-//       <ThemedView style={styles.container}>
-//         <ThemedView style={styles.item}>
-//           <ThemedText>จำนวนคน</ThemedText>
-//           <ThemedText type="title">0.00</ThemedText>
-//         </ThemedView>
-//         <ThemeDivider orientation="vertical" />
-//         <ThemedView style={styles.item}>
-//           <ThemedText>ราคารวม</ThemedText>
-//           <ThemedText type="title">0.00</ThemedText>
-//         </ThemedView>
-//       </ThemedView>
-//       <ThemeDivider />
-//     </>
-//   );
-// }
-
-function OverallStat() {
+function OrderOverview() {
   return (
     <>
       <ThemedView style={styles.container}>
@@ -58,4 +39,4 @@ function OverallStat() {
   );
 }
 
-export { OverallStat };
+export { OrderOverview };

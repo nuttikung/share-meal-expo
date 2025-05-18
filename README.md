@@ -1,4 +1,4 @@
-# Welcome to your Expo app 👋
+# Welcome to Share Meal Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
@@ -52,5 +52,30 @@ Join our community of developers creating universal apps.
 
 ## Todo
 
-[ ] - WASM from rust to make OCR Image (Migrate Axum logic to lib)
-[ ] - React native (WASM biden) refer to https://github.com/cawfree/react-native-webassembly
+[x] - OCR from native module
+[ ] - Reuseable Form for Order
+[ ] - Reuseable Form for Member
+[ ] - Transaction to sqlite with reference PK and FK if joinable
+[ ] - UI Color Theme
+[ ] - Refactor to be new structure
+
+```
+├── .expo // generate from expo
+├── .zed  // editor configuration
+├── app   // routing
+├── assets
+│   ├── fonts
+│   │   └── SukhumvitSet-Medium.ttf
+│   └── images
+│       ├── adaptive-icon.png
+│       ├── favicon.png
+│       ├── icon.png
+│       └── splash-icon.png
+├── components
+├── constants
+│   └── Colors.ts // theme configuration
+├── context
+├── package.json
+├── tsconfig.json
+└── README.md
+```
